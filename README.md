@@ -1,2 +1,0 @@
-#messenger
-Android IPC机制之messenger的使用
