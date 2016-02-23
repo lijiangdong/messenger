@@ -9,7 +9,7 @@
     tools:context="com.ljd.messenger.MainActivity">
 
     <TextView
-        android:id="@+id/connect_state"
+        android:id="@+id/connect_state_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <Button

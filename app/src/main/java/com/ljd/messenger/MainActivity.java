@@ -18,14 +18,20 @@ import android.widget.TextView;
 
 import java.util.Random;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MainActivity extends AppCompatActivity {
 
-    private LinearLayout mShowLinear;
+    @Bind(R.id.messenger_linear)
+    LinearLayout mShowLinear;
+
+    @Bind(R.id.connect_state_text)
+    TextView mConnectionState;
+
     private Messenger mMessenger;
-    private Button mTestButton;
-    private Button mClearButton;
     private boolean mIsConnection;
-    private TextView mConnectionState;
     private final String LETTER_CHAR = "abcdefghijkllmnopqrstuvwxyz";
 
     //用于传递给服务端回复的Messenger
@@ -65,20 +71,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         Intent intent = new Intent(MainActivity.this,MessengerService.class);
         bindService(intent,mConnection, Context.BIND_AUTO_CREATE);
-        initView();
     }
 
-    private void initView(){
-        mShowLinear = (LinearLayout)findViewById(R.id.messenger_linear);
-        mTestButton = (Button)findViewById(R.id.test_button);
-        mClearButton = (Button)findViewById(R.id.clear_button);
-        mConnectionState = (TextView)findViewById(R.id.connect_state);
 
-        mTestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @OnClick({R.id.test_button,R.id.clear_button})
+    public void onClickButton(View v){
+        switch (v.getId()){
+            case R.id.test_button:
                 Message messageClient = Message.obtain(null,0);
                 Bundle bundle = new Bundle();
                 bundle.putString("client",generateMixString());
@@ -95,21 +97,17 @@ public class MainActivity extends AppCompatActivity {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
-            }
-        });
-
-        mClearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case R.id.clear_button:
                 mShowLinear.removeAllViews();
-            }
-        });
+                break;
+        }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbindService(mConnection);
+        ButterKnife.unbind(this);
     }
 
     /**
