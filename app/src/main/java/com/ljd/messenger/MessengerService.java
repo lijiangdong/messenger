@@ -22,8 +22,7 @@ public class MessengerService extends Service {
                     replyMessage.what = 1;
                     Bundle bundle = new Bundle();
                     //将接收到的字符串转换为大写后发送给客户端
-                    bundle.putString("service",
-                            msg.getData().containsKey("client")?msg.getData().getString("client").toUpperCase():"");
+                    bundle.putString("service", msg.getData().getString("client").toUpperCase());
                     replyMessage.setData(bundle);
                     try {
                         clientMessenger.send(replyMessage);
